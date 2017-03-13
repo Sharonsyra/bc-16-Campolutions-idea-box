@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<h1>{{ user.name }}</h1>
+	
+	{% for i in idea %}
+
+	{{i.name}}
+	</br>
+
+	{{i.description}}
+	</br>
+
+	{{i.category}}
+	</br>
+
+	{{i.tags}}
+	</br>
+	<a href="{{url_for('editIdea', user_id = user.id, idea_id = i.id)}}">Edit</a>
+	</br>
+	<a href="{{url_for('deleteIdea', user_id = user.id, idea_id = i.id)}}">Delete</a>
+</br>
+{% endfor %}
+
+</body>
+</html>
