@@ -28,6 +28,15 @@ class Ideas(Base):
 	user_id = Column(Integer, ForeignKey('user.id'))
 	user = relationship(User)
 
+class Comments(Base):
+
+	__tablename__ = 'comments'
+
+	id = Column(Integer, primary_key = True)
+	comment = Column(String(250), nullable = True)
+	idea_id = Column(Integer, ForeignKey('idea.id'))
+	user_id = Column(Integer, ForeignKey('user.id'))
+		
 #end of file code
 engine = create_engine('sqlite:///userideas.db')
 Base.metadata.create_all(engine)
