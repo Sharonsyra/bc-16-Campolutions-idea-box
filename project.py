@@ -16,74 +16,39 @@ app.secret_key = "my_key"
 def main():
     return render_template('index.html')
 
-@app.route('/showSignUp')
-def showSignUp():
-    return render_template('signup.html')
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('signup.html')
 
-@app.route('/signUp',methods=['POST','GET'])
-def signUp():
-    try:
-        _name = request.form['inputName']
-        _email = request.form['inputEmail']
-        _password = request.form['inputPassword']
+    elif request.method == 'POST':
+        name = request.form['inputName']
+        username = request.form['inputUserName']
+        email = request.form['inputEmail']
+        password = request.form['inputPassword']
+        newUser = User(name = name, username = username, email = email, password = password)
+        session.add(newUser)
+        session.commit()
+        return redirect(url_for('signin'))
+    
+@app.route('/signin', methods = ['GET', 'POST'])
+def signin():
+    if request.method == 'GET':
+        return render_template('signin.html')
 
-        # validate the received values
-        if _name and _email and _password:
+    elif request.method == 'POST':
+        email = request.form['inputEmail']
+        password = request.form['inputPassword']
+        checkUser = session.query(User).filter_by(email = email)
+        if not checkUser:
+            flash("Invalid email!")
+            return render_template("signin.html")
 
-            # All Good, let's call the MySQL
-
-            with closing(mysql.connect()) as conn:
-                with closing(conn.cursor()) as cursor:
-                    _hashed_password = generate_password_hash(_password)
-                    cursor.callproc('sp_createUser',(_name,_email,_hashed_password))
-                    data = cursor.fetchall()
-
-                    if len(data) is 0:
-                        conn.commit()
-                        return json.dumps({'message':'User created successfully !'})
-                    else:
-                        return json.dumps({'error':str(data[0])})
-        else:
-            return json.dumps({'html':'<span>Enter the required fields</span>'})
-
-    except Exception as e:
-        return json.dumps({'error':str(e)})
-
-@app.route('/showSignin')
-def showSignin():
-    return render_template('signin.html')
-
-@app.route('/validateLogin',methods=['POST'])
-def validateLogin():
-    try:
-        _username = request.form['inputEmail']
-        _password = request.form['inputPassword']
-        # validate the received values
-        if _username and _password:
-
-            # All Good, let's call the MySQL
-
-            with closing(mysql.connect()) as conn:
-                with closing(conn.cursor()) as cursor:
-                    cursor.callproc('sp_validateLogin',(_username))
-                    data = cursor.fetchall()
-
-                    if len(data) > 0:
-                        if check_password_hash(str(data[0][3]),_password):
-                            session['user'] = data[0][0]
-                            return redirect('/userHome')
-                        else:
-                            return render_template('error.html',error = 'Wrong Email address or Password.')
-                    else:
-                        return render_template('error.html',error = 'Wrong Email address or Password.')
- 
- 
-        else:
-            return json.dumps({'html':'<span>Enter the required fields</span>'})
-
- 
-    except Exception as e:
-        return render_template('error.html',error = str(e))
+        checkPassword = session.query(User).filter_by(email == email and password == password)
+        if not checkPassword:
+            flash("Invalid credentials!")
+            return render_template("signin.html")
+        return render_template("ideabox.html")
 
 @app.route('/userHome')
 def userHome():
@@ -136,7 +101,6 @@ def newIdea(user_id):
 @app.route('/users/<int:user_id>/<int:idea_id>/edit/', methods = ['GET','POST'])
 def editIdea(user_id, idea_id):
     editedIdea = session.query(Ideas).filter_by(id = idea_id).one()
-    print("My new idea", editedIdea)
     if request.method == 'POST':
         if request.form['name']:
             editedIdea.name = request.form['name']
@@ -146,10 +110,9 @@ def editIdea(user_id, idea_id):
     else:
         return render_template('editIdea.html', user_id = user_id, idea_id = id, i = editedIdea)
     
-@app.route('/users/<int:user_id>/<int:idea_id>/delete/', methods = ['GET', 'DELETE'])
+@app.route('/users/<int:user_id>/<int:idea_id>/delete/', methods = ['GET', 'POST'])
 def deleteIdea(user_id, idea_id):
     deletedIdea = session.query(Ideas).filter_by(id = idea_id).one()
-    print("This is the deleted idea:", deletedIdea) 
     if request.method == 'POST':
         session.delete(deletedIdea)
         session.commit()
