@@ -4,6 +4,9 @@
 	<title></title>
 </head>
 <body>
+
+	<a href="{{url_for('newIdea', user_id = user.id, idea_id = idea.id)}}">Add new Idea</a>
+
 	<h1>{{ user.name }}</h1>
 	
 	{% for i in idea %}
