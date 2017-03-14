@@ -4,13 +4,13 @@
 	<title></title>
 </head>
 <body>
-<h1>Edit Idea</h1>
+<h1>DELETE Idea</h1>
 
-<form action="{{ url_for('deleteIdea', idea_id = i.id) }}" method="post">
+<form action="{{ url_for('deleteIdea', user_id = user_id, idea_id = i.id) }}" method="post">
 	<p>Name:</p>
-	<input type="text" name="name" size="30" placeholder="{{i.name}}">
+	<h3>{{i.name}}</h3>
 
-	<input type="submit" value="Edit" name="">
+	<input type="submit" value="Delete" name="">
 	<a href="{{url_for('user', user_id = i.user.id)}}"> Cancel </a>
 </form>
 </body>
