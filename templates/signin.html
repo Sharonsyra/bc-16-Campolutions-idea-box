@@ -21,9 +21,9 @@
                 <ul class="right hide-on-med-and-down" id="nav-mobile">
                     <li role="presentation" class="active"><a href="/">Home</a>
                     </li>
-                    <li role="presentation"><a href="showSignin">Sign In</a>
+                    <li role="presentation"><a href="signin">Sign In</a>
                     </li>
-                    <li role="presentation"><a href="showSignUp">Sign Up</a>
+                    <li role="presentation"><a href="register">Sign Up</a>
                     </li>
                 </ul>
                 <h3 class="nav-title">Python Flask App</h3>
@@ -33,7 +33,7 @@
  
       <div class="row col s12 m6 card-panel blue-grey darken-1 card-content white-text">
           <h1>Bucket List App</h1>
-          <form action="/validateLogin" method="post">
+          <form action="{{url_for('signin')}}" method="post">
             <label for="inputEmail">Email Address</label>
             <input type="email" name="inputName" id="inputName" class="validate" placeholder="Email address" required autofocus>
             <label for="inputPassword">Password</label>
