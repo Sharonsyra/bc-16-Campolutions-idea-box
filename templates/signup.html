@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Python Flask Bucket List App</title>
+ 
+    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="static/images/favicon.png"/>
+
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="static/css/materialize.min.css"  media="screen,projection"/>
+    <!-- <link rel="stylesheet" type="text/css" href="static/css/signup.css">
+     -->
+  </head>
+ 
+  <body>
+ 
+    <div class="container">
+      <div class="header">
+            <nav>
+            <div class="nav-wrapper #9c27b0 purple">
+                <ul class="right hide-on-med-and-down" id="nav-mobile">
+                    <li role="presentation" class="active"><a href="/">Home</a>
+                    </li>
+                    <li role="presentation"><a href="showSignin">Sign In</a>
+                    </li>
+                    <li role="presentation"><a href="showSignUp">Sign Up</a>
+                    </li>
+                </ul>
+                <h3 class="nav-title">Python Flask App</h3>
+            </div>
+            </nav>
+      </div>
+ 
+      <div class="row col s12 m6 card-panel blue-grey darken-1 card-content white-text">
+          <h1>Bucket List App</h1>
+          <form>
+            <label for="inputEmail">Name</label>
+            <input type="text" name="inputName" id="inputName" class="validate" placeholder="Your Name" required autofocus>
+            <label for="inputEmail">Email address</label>
+            <input type="text" name="inputEmail" id="inputEmail" class="validate" placeholder="Email address" required autofocus>
+            <label for="inputPassword">Password</label>
+            <input type="password" name="inputPassword" id="inputPassword" class="validate" placeholder="Password" required>             
+          <button class="btn waves-effect waves-light" type="submit" name="action">Sign up</button>
+          </form>
+      </div>
+    
+ 
+      <footer class="footer">
+        <p>&copy; ShaRobley 2017</p>
+      </footer>
+ 
+    </div>
+
+    <script type="text/javascript" src="static/js/jquery.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="static/js/materialize.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#btnSignUp').click(function() {
+ 
+        $.ajax({
+            url: '/signUp',
+            data: $('form').serialize(),
+            type: 'POST',
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+
+      });
+    </script>
+  </body>
+</html>
