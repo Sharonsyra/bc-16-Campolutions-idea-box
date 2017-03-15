@@ -32,10 +32,10 @@
         </div>
  
       <div class="row col s12 m6 card-panel blue-grey darken-1 card-content white-text">
-          <h1>Bucket List App</h1>
-          <form action="{{url_for('signin')}}" method="post">
+          <h1>Campolution Idea Box</h1>
+          <form action="{{ url_for('signin') }}" method="post">
             <label for="inputEmail">Email Address</label>
-            <input type="email" name="inputName" id="inputName" class="validate" placeholder="Email address" required autofocus>
+            <input type="email" name="inputEmail" id="inputEmail" class="validate" placeholder="Email address" required autofocus>
             <label for="inputPassword">Password</label>
             <input type="password" name="inputPassword" id="inputPassword" class="validate" placeholder="Password" required>             
           <button class="btn waves-effect waves-light" type="submit" name="action">Sign in</button>
