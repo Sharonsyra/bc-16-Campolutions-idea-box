@@ -55,6 +55,8 @@ class Ideas(Base):
     tags = Column(String(250))
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    upvotes = Column(Integer, default = 0)
+    downvotes = Column(Integer, default = 0)
 
 class Comments(Base):
 
