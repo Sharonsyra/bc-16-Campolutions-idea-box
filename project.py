@@ -4,6 +4,7 @@ app = Flask(__name__)
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Ideas, Comments
+from sqlalchemy import update
 
 engine = create_engine('sqlite:///userideas.db')
 Base.metadata.bind = engine
@@ -45,7 +46,7 @@ def signin():
             flash("Invalid email!")
             return render_template("signin.html")
         elif checkUser is not None:
-            checkPassword = dbsession.query(User).filter(email = email).filter(password = password)
+            checkPassword = dbsession.query(User).filter_by(email = email).filter_by(password = password)
             if not checkPassword:
                 flash("Invalid credentials!")
                 return render_template("signin.html")
@@ -95,7 +96,6 @@ def user(user_id):
     user = dbsession.query(User).filter_by(id = user_id).one()
     idea = dbsession.query(Ideas).filter_by(user_id = user.id)
     return render_template('user.html', user = user, idea = idea)
-
 @app.route('/users/<int:user_id>/new/', methods = ['GET','POST'])
 def newIdea(user_id):
     
@@ -108,16 +108,21 @@ def newIdea(user_id):
         dbsession.add(newIdea)
         dbsession.commit()
         flash("new Idea created!")
-        return redirect(url_for('user', user_id = user_id)) 
+        return redirect(url_for('userHome', user_id = user_id)) 
     else:
         return render_template('newIdea.html', user_id = user_id)
 
 @app.route('/users/<int:user_id>/<int:idea_id>/edit/', methods = ['GET','POST'])
 def editIdea(user_id, idea_id):
-    editedIdea = dbsession.query(Ideas).filter_by(id = idea_id).one()
+    editedIdea = dbsession.query(Ideas).filter_by(id = idea_id).filter_by(user_id = user_id).one()
     if request.method == 'POST':
-        if request.form['name']:
-            editedIdea.name = request.form['name']
+        name = request.form['name']
+        description = request.form['description']
+        category = request.form['category']
+        tags = request.form['tags']
+        editedIdea = update(Ideas).where(Ideas.id == idea_id).values(name = name, description = description, category = category, tags = tags, user_id = user_id)
+        #editedIdea.update = Ideas(name = name, description = description, category = category, tags = tags, user_id = user_id)
+        dbsession.execute(editedIdea)
         dbsession.commit()
         flash("Idea has been edited")
         return redirect(url_for('user', user_id = user_id))
