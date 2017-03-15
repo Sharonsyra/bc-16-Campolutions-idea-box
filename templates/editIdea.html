@@ -2,66 +2,93 @@
 <html lang="en">
  
 <head>
-    <title>Python Flask Bucket List App</title>
+    <title>Edit Idea | IdeaBox</title>
  
  
-    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
-    <link rel="shortcut icon" type="image/png" href="static/images/favicon.png"/>
+   <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+   <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png"/>
 
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="static/css/materialize.min.css"  media="screen,projection"/>
+   <!--Import Google Icon Font-->
+   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   <!--Import materialize.css-->
+   <link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css"  media="screen,projection"/>
+
+   <!--Let browser know website is optimized for mobile-->
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 
  
 </head>
  
 <body>
  
-	<div class="container">
     	<div class="header">
             <nav>
-            <div class="nav-wrapper #9c27b0 purple">
+            <div class="nav-wrapper teal">
                 <ul class="right hide-on-med-and-down" id="nav-mobile">
-                    <li role="presentation"><a href="/logout">Logout</a></li>
+                    <li role="presentation" class=""><a href="/home">Home</a></li>
+                    <li role="presentation" class=""> <a href="/profile"> Profile </a> </li>
+                    <li role="presentation" class=""> <a href="/newidea"> New Idea </a> </li>
+                    <li role="presentation" class=""> <a href="/logout"> Logout </a> </li>
                 </ul>
-                <h3 class="nav-title">Python Flask App</h3>
             </div>
             </nav>
         </div>
+
+  <div class="container">
   
  
 <h1>New Idea</h1>
 
-<form action="{{ url_for('editIdea', user_id = user_id ,idea_id = i.id) }}" method="post">
+<form action="{{ url_for('editIdea', idea_id = idea.id) }}" method="post">
 	<p>Name:</p>
-	<input type="text" name="name" size="30" placeholder="{{i.name}}">
+	<input type="text" id="name" name="name" size="30" placeholder="{{idea.name}}">
 	<p>Description:</p>
-	<textarea id="textarea1" class="materialize-textarea" name="description" cols="50" rows="10"></textarea>
+	<textarea id="textarea1" class="materialize-textarea" name="description" cols="50" rows="10" placeholder="{{idea.description}}"></textarea>
 	<p>Category:</p>
-	<input type="text" name="category" size="30" placeholder="{{i.name}}">
+	<input type="text" id="category" name="category" size="30" placeholder="{{idea.name}}">
 	<p>Tags:</p>
-	<input type="text" name="tags" size="30" placeholder="{{i.name}}">
+	<input type="text" id="tags" name="tags" size="30" placeholder="{{idea.name}}">
 
 	<input type="submit" value="Edit" name="">
-	<a href="{{url_for('user', user_id = i.user.id)}}"> Cancel </a>
+	<a href="{{url_for('profile')}}"> Cancel </a>
 </form>
-
-</body>
-
-<footer class="footer">
-<p>&copy; Company 2015</p>
-</footer>
  
 </div>
+
+      <footer class="page-footer teal">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text"> Details </h5>
+              <p class="grey-text text-lighten-4">
+                More awesome details about ideabox
+              </p>
+            </div>
+            <div class="col l4 offset-12 s12">
+              <h5 class="white-text"> Links </h5>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container"> &copy; 2017 </div>
+        </div>
+      </footer>
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
       <script type="text/javascript" src="static/js/materialize.min.js"></script>
       <script type="text/javascript">
            $(document).ready(function(){
       $('.parallax').parallax();
     });
-        
-         $('#textarea1').val('Describe your idea better here');
+      
   $('#textarea1').trigger('autoresize');
   
+      </script>
+      <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+      <script>
+        var simplemde = new SimpleMDE({ element: document.getElementById("textarea1") });
       </script>
 </body>
  
