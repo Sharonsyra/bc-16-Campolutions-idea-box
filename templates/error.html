@@ -2,7 +2,7 @@
 <html lang="en">
  
 <head>
-    <title>Unauthorized Access:: Python Flask Bucket List App</title>
+    <title>Error | IdeaBox</title>
  
  
     <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
@@ -16,34 +16,45 @@
  
 <body>
  
-    <div class="container">
         <div class="header">
             <nav>
-            <div class="nav-wrapper #9c27b0 purple">
+            <div class="nav-wrapper teal">
                 <ul class="right hide-on-med-and-down" id="nav-mobile">
-                    <li role="presentation" class="active"><a href="/">Home</a>
-                    </li>
-                    <li role="presentation"><a href="showSignin">Sign In</a>
-                    </li>
-                    <li role="presentation"><a href="showSignUp">Sign Up</a>
-                    </li>
+                    <li role="presentation" class=""><a href="/home">Home</a></li>
+                    <li role="presentation" class=""> <a href="/profile"> Profile </a> </li>
+                    <li role="presentation" class=""> <a href="/newidea"> New Idea </a> </li>
+                    <li role="presentation" class=""> <a href="/logout"> Logout </a> </li>
                 </ul>
-                <h3 class="nav-title">Python Flask App</h3>
             </div>
             </nav>
         </div>
+
+    <div class="container">
  
         <div class="row">
             <h1>{{error}}</h1>
         </div>
  
- 
- 
-        <footer class="footer">
-            <p>&copy; ShaRobley 2017</p>
-        </footer>
- 
     </div>
+
+    <footer class="page-footer teal">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text"> Details </h5>
+              <p class="grey-text text-lighten-4">
+                More awesome details about ideabox
+              </p>
+            </div>
+            <div class="col l4 offset-12 s12">
+              <h5 class="white-text"> Links </h5>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container"> &copy; 2017 </div>
+        </div>
+      </footer>
 </body>
  
 </html>
