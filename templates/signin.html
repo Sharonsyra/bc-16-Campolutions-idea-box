@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Python Flask Bucket List App</title>
+    <title>Sign In | IdeaBox</title>
  
     
     <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
@@ -14,25 +14,25 @@
  
   <body>
  
-    <div class="container">
       <div class="header">
             <nav>
-            <div class="nav-wrapper #9c27b0 purple">
+            <div class="nav-wrapper teal">
                 <ul class="right hide-on-med-and-down" id="nav-mobile">
-                    <li role="presentation" class="active"><a href="/">Home</a>
-                    </li>
-                    <li role="presentation"><a href="signin">Sign In</a>
+                    <li role="presentation" class=""><a href="/">Home</a>
                     </li>
                     <li role="presentation"><a href="register">Sign Up</a>
                     </li>
+                    <li role="presentation"><a href="signin">Sign In</a>
+                    </li>
                 </ul>
-                <h3 class="nav-title">Python Flask App</h3>
             </div>
             </nav>
         </div>
+
+    <div class="container">
  
-      <div class="row col s12 m6 card-panel blue-grey darken-1 card-content white-text">
-          <h1>Campolution Idea Box</h1>
+      <div class="row col s12 m6 card-panel card-content">
+          <h1>IdeaBox</h1>
           <form action="{{ url_for('signin') }}" method="post">
             <label for="inputEmail">Email Address</label>
             <input type="email" name="inputEmail" id="inputEmail" class="validate" placeholder="Email address" required autofocus>
@@ -42,11 +42,27 @@
           </form>
       </div>
  
-      <footer class="footer">
-        <p>&copy; ShaRobley 2017</p>
-      </footer>
- 
     </div>
+
+      <footer class="page-footer teal">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text"> Details </h5>
+              <p class="grey-text text-lighten-4">
+                More awesome details about ideabox
+              </p>
+            </div>
+            <div class="col l4 offset-12 s12">
+              <h5 class="white-text"> Links </h5>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container"> &copy; 2017 </div>
+        </div>
+      </footer>
+
     <script type="text/javascript" src="static/js/jquery.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="static/js/materialize.min.js"></script>
