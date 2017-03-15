@@ -2,43 +2,90 @@
 <html lang="en">
  
 <head>
-    <title>Python Flask Bucket List App</title>
+    <title>Home | IdeaBox</title>
  
  
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
- 
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <link href="../static/css/signup.css" rel="stylesheet">
+   <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+   <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png"/>
+
+   <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
  
  
 </head>
  
 <body>
  
-    <div class="container">
         <div class="header">
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="/logout">Logout</a>
-                    </li>
-                    <li role="presentation"><a href="/newIdea">New Idea</a>
-                    </li>
+            <nav class="teal">
+                <ul class="right nav nav-pills pull-right">
+                    <li role="presentation" class=""> <a href="/profile"> Profile </a> </li>
+                    <li role="presentation" class=""> <a href="/newidea"> New Idea </a> </li>
+                    <li role="presentation" class=""> <a href="/logout"> Logout </a> </li>                   
                 </ul>
             </nav>
-            <h3 class="text-muted">Python Flask App</h3>
+            <h3 class="text-muted center">IdeaBox</h3>
         </div>
- 
+
+    <div class="container">
         <div class="row">
-            <h1>Welcome Home !!</h1>
+           <span> <p class="center"> This is a list of ideas posted by other awesome people like you. Comment and upvote </p> </span>
+        </div>
+        <div class="row">
+        
+          {% for idea in ideas %}
+          <div class="col s12 m6 l6">
+          <div class="card small teal">
+            <div class="card-content white-text">
+              <span class="card-title">{{idea.name}}</span>
+              <p>{{idea.description}}</p>
+            </div>
+            <div class="card-action">
+              <a href="/comment/{{idea.id}}/">Comment</a>
+              <a href="/downvote/{{idea.id}}/" class="right"> <i class="material-icons">thumb_down</i> {{idea.downvotes}} </a>
+              <a href="/upvote/{{idea.id}}/" class="right"> <i class="material-icons">thumb_up</i> {{idea.upvotes}}</a>
+            </div>
+          </div>
+          </div>
+          {% endfor %}
  
         </div>
- 
- 
-        <footer class="footer">
-            <p>&copy; Company 2015</p>
-        </footer>
  
     </div>
+
+    <footer class="page-footer teal">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text"> Details </h5>
+              <p class="grey-text text-lighten-4">
+                More awesome details about ideabox
+              </p>
+            </div>
+            <div class="col l4 offset-12 s12">
+              <h5 class="white-text"> Links </h5>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container"> &copy; 2017 </div>
+        </div>
+      </footer>
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="static/js/materialize.min.js"></script>
+      <script type="text/javascript">
+           $(document).ready(function(){
+      $('.parallax').parallax();
+    });
+        
+      </script>
 </body>
  
 </html>
