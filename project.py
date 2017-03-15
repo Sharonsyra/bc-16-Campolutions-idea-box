@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, g, session, json
+from werkzeug.security import generate_password_hash, check_password_hash
+
 app = Flask(__name__)
 
 from sqlalchemy import create_engine
@@ -13,10 +15,13 @@ DBdbsession = sessionmaker(bind = engine)
 dbsession = DBdbsession()
 app.secret_key = "my_key"
 
+
+# Landing page
 @app.route('/')
 def main():
     return render_template('index.html')
 
+# Sign Up
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
@@ -32,6 +37,7 @@ def register():
         dbsession.commit()
         return redirect(url_for('signin'))
     
+# Sign In
 @app.route('/signin', methods = ['GET', 'POST'])
 def signin():
     if request.method == 'GET':
@@ -40,105 +46,142 @@ def signin():
     elif request.method == 'POST':
         email = request.form['inputEmail']
         password = request.form['inputPassword']
-        checkUser = dbsession.query(User).filter_by(email = email)
-
+        checkUser = dbsession.query(User).filter_by(email = email).first()
         if not checkUser:
             flash("Invalid email!")
             return render_template("signin.html")
-        elif checkUser is not None:
-            checkPassword = dbsession.query(User).filter_by(email = email).filter_by(password = password)
-            if not checkPassword:
-                flash("Invalid credentials!")
-                return render_template("signin.html")
-
-            # create a session key for the user
+        elif check_password_hash(checkUser.password, password):
+            g.user = checkUser
+            session['user'] = email
+            # print(session['user'])
+            userEmail = session['user']
+            user_id_set = dbsession.query(User.id).filter_by(email = userEmail).first()
+            user_id = user_id_set[0]
+            # print(user_id)
             return redirect(url_for('userHome'))
-            # return render_template("ideabox.html")
-            
+        else: 
+            flash("Invalid credentials!")
+            return render_template("signin.html")
 
-@app.route('/userHome')
+# Home Page
+@app.route('/home')
 def userHome():
-    # Check if a session key exists
-    # if dbsession.get('user'):
-    #     return render_template('userHome.html')
-    # else:
-    #     return render_template('error.html',error = 'Unauthorized Access')
+    #Check if a session key exist
+    if session.get('user'):
+        ideas = dbsession.query(Ideas).all()        
+        return render_template('userHome.html', ideas=ideas)
+    else:
+        return render_template('error.html',error = 'Unauthorized Access')
 
-    # Without session keys
-    return render_template('userHome.html')
-
+# Log Out
 @app.route('/logout')
 def logout():
-    dbsession.pop('user',None)
+    session.pop('user', None)
     return redirect('/')
 
-@app.route('/ideas')
-def DefaultUser():
-    user = dbsession.query(User).first()
-    idea = dbsession.query(Ideas).filter_by(user_id = user.id)
-
-    output = ''
-    for i in idea:
-        output += i.name
-        output += '</br>'
-        output += i.description
-        output += '</br>'
-        output += i.category
-        output += '</br>'
-        output += i.tags
-        output += '</br>'
-        output += '</br>'
-
-    return output
-
-@app.route('/users/<int:user_id>/')
-def user(user_id):
-    user = dbsession.query(User).filter_by(id = user_id).one()
-    idea = dbsession.query(Ideas).filter_by(user_id = user.id)
-    return render_template('user.html', user = user, idea = idea)
-@app.route('/users/<int:user_id>/new/', methods = ['GET','POST'])
-def newIdea(user_id):
-    
-    if request.method == 'POST':
-        name = request.form['name']
-        description = request.form['description']
-        category = request.form['category']
-        tags = request.form['tags']
-        newIdea = Ideas(name = name, description = description, category = category, tags = tags, user_id=user_id)
-        dbsession.add(newIdea)
-        dbsession.commit()
-        flash("new Idea created!")
-        return redirect(url_for('userHome', user_id = user_id)) 
+# View Your Profile
+@app.route('/profile')
+def profile():
+    if session.get('user'):
+        userEmail = session['user']
+        user_id_set = dbsession.query(User.id).filter_by(email = userEmail).first()
+        user_id = user_id_set[0]
+        ideas = dbsession.query(Ideas).filter_by(user_id = user_id)
+        # print(type(ideas))
+        return render_template('user.html', ideas=ideas)
+        
     else:
-        return render_template('newIdea.html', user_id = user_id)
+        return render_template('error.html',error = 'Unauthorized Access')
 
-@app.route('/users/<int:user_id>/<int:idea_id>/edit/', methods = ['GET','POST'])
-def editIdea(user_id, idea_id):
-    editedIdea = dbsession.query(Ideas).filter_by(id = idea_id).filter_by(user_id = user_id).one()
-    if request.method == 'POST':
-        name = request.form['name']
-        description = request.form['description']
-        category = request.form['category']
-        tags = request.form['tags']
-        editedIdea = update(Ideas).where(Ideas.id == idea_id).values(name = name, description = description, category = category, tags = tags, user_id = user_id)
-        #editedIdea.update = Ideas(name = name, description = description, category = category, tags = tags, user_id = user_id)
-        dbsession.execute(editedIdea)
-        dbsession.commit()
-        flash("Idea has been edited")
-        return redirect(url_for('user', user_id = user_id))
+# Add new Idea
+@app.route('/newidea', methods = ['GET', 'POST'])
+def newidea():
+    if session.get('user'):
+        if request.method == 'GET':
+            return render_template('newIdea.html')
+        elif request.method == 'POST':
+            userEmail = session['user']
+            user_id_set = dbsession.query(User.id).filter_by(email = userEmail).first()
+            user_id = user_id_set[0]
+            name = request.form['name']
+            description = request.form['description']
+            category = request.form['category']
+            tags = request.form['tags']
+            newIdea = Ideas(name = name, description = description, category = category, tags = tags, user_id = user_id)
+            user = dbsession.query(User).filter_by(id = user_id).first()
+            dbsession.add(newIdea)
+            dbsession.commit()
+            flash("new Idea created!")
+            return redirect(url_for('userHome'))
+
+# Edit Idea
+@app.route('/edit/<int:idea_id>/', methods = ['GET','POST'])
+def editIdea(idea_id):
+    if session.get('user'):
+        if request.method == 'GET':
+            editedIdea = dbsession.query(Ideas).filter_by(id = idea_id).one()
+            return render_template('editIdea.html', idea = editedIdea)
+        if request.method == 'POST':
+            name = request.form['name']
+            description = request.form['description']
+            category = request.form['category']
+            tags = request.form['tags']
+            editedIdea = update(Ideas).where(Ideas.id == idea_id).values(name = name, description = description, category = category, tags = tags)
+            dbsession.execute(editedIdea)
+            dbsession.commit()
+            flash("Idea has been edited")
+            return redirect(url_for('profile'))
+        else:
+            return render_template('editIdea.html', idea_id = id, idea = editedIdea)
+
+@app.route('/comment/<int:idea_id>/', methods=['GET', 'POST'])
+def comment(idea_id):
+    if session.get('user'):
+        idea = dbsession.query(Ideas).filter_by(id = idea_id).first()
+        return render_template('idea.html', idea=idea)
     else:
-        return render_template('editIdea.html', user_id = user_id, idea_id = id, i = editedIdea)
-    
-@app.route('/users/<int:user_id>/<int:idea_id>/delete/', methods = ['GET', 'POST'])
-def deleteIdea(user_id, idea_id):
-    deletedIdea = dbsession.query(Ideas).filter_by(id = idea_id).one()
-    if request.method == 'POST':
+        return redirect(url_for('register'))
+
+
+@app.route('/upvote/<int:idea_id>/', methods = ['GET', 'POST'])
+def upvote(idea_id):
+    if session.get('user'):
+        idea = dbsession.query(Ideas).filter_by(id = idea_id)
+        upvote_set = dbsession.query(Ideas.upvotes).filter_by(id=idea_id).first()
+        oldupvotes = upvote_set[0]
+        newupvotes = oldupvotes+1
+        upvotes = update(Ideas).where(Ideas.id == idea_id).values(upvotes=newupvotes)
+        dbsession.execute(upvotes)
+        dbsession.commit()
+        return redirect(url_for('comment', idea_id = idea_id))
+    else:
+        return render_template('error.html', error="You are not authorised to see this")
+
+@app.route('/downvote/<int:idea_id>/', methods = ['GET', 'POST'])
+def downvote(idea_id):
+    if session.get('user'):
+        idea = dbsession.query(Ideas).filter_by(id = idea_id)
+        downvote_set = dbsession.query(Ideas.downvotes).filter_by(id=idea_id).first()
+        olddownvotes = downvote_set[0]
+        newdownvotes = olddownvotes+1
+        downvotes = update(Ideas).where(Ideas.id == idea_id).values(downvotes=newdownvotes)
+        dbsession.execute(downvotes)
+        dbsession.commit()
+        return redirect(url_for('comment', idea_id = idea_id))
+    else:
+        return render_template('error.html', error="You are not authorised to see this")
+
+# Delete Idea
+@app.route('/delete/<int:idea_id>/', methods = ['GET', 'POST'])
+def deleteIdea(idea_id):
+    if session.get('user'):
+        deletedIdea = dbsession.query(Ideas).filter_by(id = idea_id).one()
         dbsession.delete(deletedIdea)
         dbsession.commit()
         flash("Idea has been deleted")
-        return redirect(url_for('user', user_id = user_id))
+        return redirect(url_for('profile'))
     else:
-        return render_template('deleteIdea.html', user_id = user_id, idea_id = id, i = deletedIdea)
+        return render_template('error.html', error="You cannot perform this action")
 
 if __name__ == '__main__':
     app.run(debug = True)
