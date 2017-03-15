@@ -9,6 +9,15 @@
 <form action="{{ url_for('newIdea', user_id = user_id) }}" method="post">
 	<p>Name:</p>
 	<input type="text" name="name" size="30">
+	<p><b>Description:</b></p>
+	<textarea name="description" cols="50" rows="10"></textarea>
+	<p>Category:</p>
+	<input type="text" name="category" size="30">
+	<p>Tags:</p>
+	<input type="text" name="tags" size="30">
+	</br>
+	</br>
+	</br>
 	<input type="submit" value="Create" name="">
 </form>
 </body>
