@@ -1,77 +1,62 @@
-# Psquair - The Pair Programming App of the Century
-A Flask application that facilitates pair programming in conjuction with the
-Firepad JavaScript Library
+# Campolutions - Andela Campus Idea box
+This is a full stack flask application that adds users and allows them to add their ideas
 
-The application is hosted on Heroku. You can view the Psquare application at [psquair.herokuapp.com](https://psquair.herokuapp.com)
+The application is hosted on Heroku. You can view the Idea Box application at [campolutions.herokuapp.com](https://campolutions.herokuapp.com/)
 
 ## Getting Started
 These instructions should help you run the code on your machine.
 
 ### Prerequisites
-The code is written in Python3.
+The code is written in Python3
 
 ### Installing
 
-Clone the repository from GitHub:
+start by cloning the repository from GitHub:
+
+for https use
 ```
-$ git clone https://github.com/wcyn/bc-14-pair-programming
-```
-Change Directory into the project folder
-```
-$ cd bc-14-pair-programming
+$ git clone https://github.com/Sharonsyra/bc-16-Campolutions-idea-box.git
 ```
 
-Install the dependencies from `requirements.txt`
+for ssh use 
+'''
+git@github.com:Sharonsyra/bc-16-Campolutions-idea-box.git
+'''
+
+Change Directory into the project folder
+```
+$ cd bc-16-Campolutions-idea-box
+```
+
+Install the application's dependencies from `requirements.txt`
 ```
 $ pip install -r requirements.txt
 ```
 
 ### Running the program
 
+Run the database model file to create your database. In this case it will create userideas.db in your working directory
+
+'''
+$python database_setup.py
+'''
+ 
+To browse your database, download the [sqlite browser](http://sqlitebrowser.org/)
+
 Run the Flask application by typing:
 ```
-$ python runserver.py
+$ python project.py
 ```
 
 ### Major Libraries Used
 - [Flask](http://flask.pocoo.org/) - A microframework for Python based on Werkzeug, Jinja 2 and good intentions.
-- [Firebase](https://firebase.google.com/) - A mobile and web application platform with tools and infrastructure designed to help developers build high-quality apps. Firebase is made up of complementary features that developers can mix-and-match to fit their needs.
-- [Firepad](https://firepad.io/) - Open source collaborative code and text editing that runs on JavaScript and Firebase
-- [Python-JWT](https://github.com/davedoesdev/python-jwt) - Module for generating and verifying JSON Web Tokens.
-- [PyCrypto](https://pypi.python.org/pypi/pycrypto) - A collection of both secure hash functions (such as SHA256 and RIPEMD160), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.). Written for Python.
-- [Pyrebase](https://github.com/thisbejim/Pyrebase) - A simple python wrapper for the Firebase API.
+- [Markdown language](http://flask.pocoo.org/snippets/19/) - This is a Python implementation of John Gruber’s Markdown. It is almost completely compliant with the reference implementation, though there are a few known issues. See Features for information on what exactly is supported and what is not. Additional features are supported by the Available Extensions.s
+- [SQLAlchemy](https://www.sqlalchemy.org/) - SQLAlchemy is the Python SQL toolkit and Object Relational Mapper that gives application developers the full power and flexibility of SQL.
+- [Werkzeug](http://werkzeug.pocoo.org/) - Werkzeug is a WSGI utility library for Python. It's widely used and BSD licensed.
 
 
 ## Resources Used
+- Udacity Full Stack Foundations by instructor Lorenzo Brown [Full Stack Foundations](https://www.udacity.com/course/full-stack-foundations--ud088)
 - Scotch.io Tutorial - [Getting Started with Flask, a Python Framework](https://scotch.io/tutorials/getting-started-with-flask-a-python-microframework)
+- flask.pocoo.org documentation [Flask web development, one drop at a time](http://flask.pocoo.org/docs/0.12/)
 
-
-## Running on c9.io (Cloud 9)
-The application works well with the Cloud9 server. No extra settings of ports or host need to be adjusted.
-
-## NOTES
-You may find these helpful when setting up firebase authentication
-
-### Generating a public key from Firebase private key
-First, install [M2Crypto](https://pypi.python.org/pypi/M2Crypto) (A Python crypto and SSL toolkit)
-```
-$ sudo apt-get install python-m2crypto
-```
-
-Then run the following code using Python2
-
-```
-# pb_key.py
-
-from M2Crypto import RSA
-RSA.load_key('path/to/server_key.pem').save_pub_key('path/to/server_key.pub')
-```
-
-### Generating SSH public key from `.pub` RSA Public Key format
-From the command line, run:
-
-```
-ssh-keygen -f my_public_key.pub -i -m PKCS8
-```
-This will output a public key in the the ssh-rsa format, which you can then
-store as an environment variable
