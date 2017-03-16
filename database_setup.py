@@ -30,12 +30,7 @@ class User(Base):
         """
         self.password = generate_password_hash(new_password)
 
-    # def verify_password(self, current_password):
-    #     """
-    #     verify the entered password
-    #     """
-    #     return check_password_hash(self.password, current_password)
-
+    
     def generate_token(self, expiration = 1200):
         """
         generates token
