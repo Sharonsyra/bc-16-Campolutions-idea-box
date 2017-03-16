@@ -39,18 +39,19 @@
   <div class="container">
   
  
-<h1>New Idea</h1>
+<h1>Edit Idea</h1>
 
 <form action="{{ url_for('editIdea', idea_id = idea.id) }}" method="post">
 	<p>Name:</p>
-	<input type="text" id="name" name="name" size="30" placeholder="{{idea.name}}">
+	<input type="text" id="name" name="name" size="30" value="{{idea.name}}">
 	<p>Description:</p>
-	<textarea id="textarea1" class="materialize-textarea" name="description" cols="50" rows="10" placeholder="{{idea.description}}"></textarea>
+	<textarea id="textarea1" class="materialize-textarea" name="description" cols="50" rows="10">{{idea.description}}</textarea>
 	<p>Category:</p>
-	<input type="text" id="category" name="category" size="30" placeholder="{{idea.name}}">
+	<input type="text" id="category" name="category" size="30" value="{{idea.name}}">
 	<p>Tags:</p>
-	<input type="text" id="tags" name="tags" size="30" placeholder="{{idea.name}}">
-
+	<input type="text" id="tags" name="tags" size="30" value="{{idea.name}}">
+  </br>
+  </br>
 	<input type="submit" value="Edit" name="">
 	<a href="{{url_for('profile')}}"> Cancel </a>
 </form>
