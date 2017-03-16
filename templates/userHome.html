@@ -36,14 +36,16 @@
         <div class="row">
            <span> <p class="center"> This is a list of ideas posted by other awesome people like you. Comment and upvote </p> </span>
         </div>
-        <div class="row">
+    <div class="row">
         
           {% for idea in ideas %}
-          <div class="col s12 m6 l6">
+          <div class="col s12 m6 l3">
           <div class="card small teal">
             <div class="card-content white-text">
               <span class="card-title">{{idea.name}}</span>
-              <p>{{idea.description}}</p>
+              <p>
+                {% filter markdown %}{{ idea.description }}{% endfilter %}
+              </p>
             </div>
             <div class="card-action">
               <a href="/comment/{{idea.id}}/">Comment</a>
@@ -73,7 +75,7 @@
           </div>
         </div>
         <div class="footer-copyright">
-          <div class="container"> &copy; 2017 </div>
+          <div class="container"> &copy; Andela Idea Box 2017 </div>
         </div>
       </footer>
 
