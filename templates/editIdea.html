@@ -47,11 +47,12 @@
 	<p>Description:</p>
 	<textarea id="textarea1" class="materialize-textarea" name="description" cols="50" rows="10">{{idea.description}}</textarea>
 	</br>
+	<button class="btn waves-effect waves-light" type="submit" name="action">Edit
+  </button>
   </br>
-	<input type="submit" value="Edit" name="">
   </br>
-  </br>
-	<a href="{{url_for('profile')}}"> Cancel </a>
+	<button class="btn waves-effect waves-light" type="submit" name="action"><a href="{{url_for('profile')}}"> Cancel </a>
+  </button>
 </form>
  
 </div>
