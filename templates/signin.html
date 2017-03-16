@@ -22,7 +22,7 @@
                     </li>
                     <li role="presentation"><a href="register">Sign Up</a>
                     </li>
-                    <li role="presentation"><a href="signin">Sign In</a>
+                    <li role="presentation"><a href="sign_in">Sign In</a>
                     </li>
                 </ul>
             </div>
@@ -33,7 +33,7 @@
  
       <div class="row col s12 m6 card-panel card-content">
           <h1>IdeaBox</h1>
-          <form action="{{ url_for('signin') }}" method="post">
+          <form action="{{ url_for('sign_in') }}" method="post">
             <label for="inputEmail">Email Address</label>
             <input type="email" name="inputEmail" id="inputEmail" class="validate" placeholder="Email address" required autofocus>
             <label for="inputPassword">Password</label>
