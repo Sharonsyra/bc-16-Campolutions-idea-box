@@ -40,8 +40,8 @@
         <div class="row">
         
           {% for idea in ideas %}
-          <div class="col s12 m4 l3">
-          <div class="card small teal">
+          <div class="col s12 m4 l4">
+          <div class="card medium teal">
             <div class="card-content white-text">
               <span class="card-title">{{idea.name}}</span>
               <p>{% filter markdown %}{{ idea.description }}{% endfilter %}</p>
