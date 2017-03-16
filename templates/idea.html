@@ -37,7 +37,7 @@
           <div class="col s12 m12 l12">
             
               <span class="center"> <h4> {{idea.name}} </h4> </span>
-              <p class="center">{{idea.description}}</p>
+              <p class="center">{% filter markdown %}{{ idea.description }}{% endfilter %}</p>
             
             <div class="right">
               <a href="/upvote/{{idea.id}}/"> <i class="material-icons">thumb_up</i> {{idea.upvotes}}</a>
