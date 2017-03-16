@@ -8,6 +8,7 @@ Flask-Markdown==0.3
 Flask-OpenID==1.2.5
 Flask-PageDown==0.2.2
 Flask-WTF==0.14.2
+gunicorn==19.7.0
 iso8601==0.1.11
 itsdangerous==0.24
 Jinja2==2.9.5
