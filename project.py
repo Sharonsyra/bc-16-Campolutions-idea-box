@@ -7,6 +7,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Ideas, Comments
 from sqlalchemy import update
+from flaskext.markdown import Markdown
+Markdown(app)
 
 engine = create_engine('sqlite:///userideas.db')
 Base.metadata.bind = engine
