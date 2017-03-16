@@ -55,11 +55,9 @@ def sign_in():
         elif check_password_hash(checkUser.password, password):
             g.user = checkUser
             session['user'] = email
-            # print(session['user'])
             userEmail = session['user']
             user_id_set = dbsession.query(User.id).filter_by(email = userEmail).first()
             user_id = user_id_set[0]
-            # print(user_id)
             return redirect(url_for('user_home'))
         else: 
             flash("Invalid credentials!")
@@ -68,7 +66,6 @@ def sign_in():
 # Home Page
 @app.route('/home')
 def user_home():
-    #Check if a session key exist
     if session.get('user'):
         ideas = dbsession.query(Ideas).all()        
         return render_template('userHome.html', ideas=ideas)
