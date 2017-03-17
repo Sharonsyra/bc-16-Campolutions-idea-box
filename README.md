@@ -19,9 +19,9 @@ $ git clone https://github.com/Sharonsyra/bc-16-Campolutions-idea-box.git
 ```
 
 for ssh use 
-'''
+```
 git@github.com:Sharonsyra/bc-16-Campolutions-idea-box.git
-'''
+```
 
 Change Directory into the project folder
 ```
@@ -37,9 +37,9 @@ $ pip install -r requirements.txt
 
 Run the database model file to create your database. In this case it will create userideas.db in your working directory
 
-'''
+```
 $python database_setup.py
-'''
+```
  
 To browse your database, download the [sqlite browser](http://sqlitebrowser.org/)
 
